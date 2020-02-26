@@ -1,0 +1,4 @@
+Managers\AccountManager.class
+Managers\UserManager.class
+Classes\User.class
+Managers\ConnectionDB.class
