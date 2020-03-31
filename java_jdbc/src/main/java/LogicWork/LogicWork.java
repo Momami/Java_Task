@@ -14,6 +14,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +62,7 @@ public class LogicWork {
 
     public static void addMoneyBalance(float sum, String accCode, Account account) throws SQLException {
         sum = sum * converter.get(accCode);
-        // TO DO сделать перевод валют в зависимости от currency
+        // перевод валют в зависимости от currency
         float conv = converter.get(account.getAccCode());
         BigDecimal amount = new BigDecimal((sum + account.getAmount().doubleValue() * conv) / conv);
         account.setAmount(amount);
@@ -84,8 +89,9 @@ public class LogicWork {
             return "У получателя еще нет счетов для получения средств!";
         }
         // Получить дату
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        //Date dateOfOperation = new Date(dateFormat.parse((new java.util.Date()).toString()).getTime());
+        Date date = new Date();
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM);
+        LocalDate time = date.toInstant().atZone(ZoneOffset.ofHours(4)).toLocalDate();
         BigDecimal amountRub = new BigDecimal(amount.doubleValue() * converter.get(accCode));
         // Рассчитать остаток на счете
         BigDecimal amountBefore = acc.getAmount();
@@ -104,7 +110,7 @@ public class LogicWork {
         accOut.setAmount(addBalance);
         AccountManager.updateAccountAmount(accOut);
         // Добавление в журнал операций
-        Operation operation = new Operation(null, accCode, acc.getId(), accOut.getId(), amount,
+        Operation operation = new Operation(time, accCode, acc.getId(), accOut.getId(), amount,
                 amountBefore, acc.getAmount());
         OperationManager.createOperation(operation);
         return "Успешно!";

@@ -3,10 +3,11 @@ package Classes;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class Operation {
     private long id;
-    private Date dateOfOperation;
+    private LocalDate dateOfOperation;
     private String accCode;
     private long accIn;
     private long accOut;
@@ -14,7 +15,7 @@ public class Operation {
     private BigDecimal amountBefore;
     private BigDecimal amountAfter;
 
-    public Operation(Date dateOfOperation, String accCode, long accIn, long accOut,
+    public Operation(LocalDate dateOfOperation, String accCode, long accIn, long accOut,
                      BigDecimal amount, BigDecimal amountBefore, BigDecimal amountAfter) {
         this.dateOfOperation = dateOfOperation;
         this.accCode = accCode;
@@ -25,7 +26,7 @@ public class Operation {
         this.amountAfter = amountAfter;
     }
 
-    public Operation(long id, Date dateOfOperation, String accCode, long accIn, long accOut,
+    public Operation(long id, LocalDate dateOfOperation, String accCode, long accIn, long accOut,
                      BigDecimal amount, BigDecimal amountBefore, BigDecimal amountAfter) {
         this.id = id;
         this.dateOfOperation = dateOfOperation;
@@ -45,11 +46,11 @@ public class Operation {
         this.id = id;
     }
 
-    public Date getDateOfOperation() {
+    public LocalDate getDateOfOperation() {
         return dateOfOperation;
     }
 
-    public void setDateOfOperation(Date dateOfOperation) {
+    public void setDateOfOperation(LocalDate dateOfOperation) {
         this.dateOfOperation = dateOfOperation;
     }
 

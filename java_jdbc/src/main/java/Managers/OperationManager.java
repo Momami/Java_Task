@@ -46,7 +46,7 @@ public class OperationManager {
         ResultSet rs = stmt.executeQuery();
         List<Operation> result = new ArrayList<>();
         while (rs.next()) {
-            Operation operation = new Operation(rs.getLong("id"), rs.getDate("dateOfOperation"),
+            Operation operation = new Operation(rs.getLong("id"), rs.getDate("dateOfOperation").toLocalDate(),
                     rs.getString("accCode"), rs.getLong("accIn"),
                     rs.getLong("accOut"), rs.getBigDecimal("amount"), rs.getBigDecimal("amountBefore"),
                     rs.getBigDecimal("amountAfter"));
