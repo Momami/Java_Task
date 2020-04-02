@@ -7,7 +7,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,7 +15,6 @@ import ru.example.accounts.backend.dao.OperationRepository;
 import ru.example.accounts.backend.dao.UserRepository;
 import ru.example.accounts.backend.model.*;
 import ru.example.accounts.backend.security.JwtToken;
-import ru.example.accounts.backend.service.AccountService;
 import ru.example.accounts.backend.service.JwtUserDetailsService;
 import ru.example.accounts.backend.dao.AccountRepository;
 import ru.example.accounts.backend.service.UserService;
@@ -81,7 +79,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public Boolean create(@RequestBody User body) throws  ValidationException {
+    public Boolean create(@RequestBody UserCreateModel body) throws  ValidationException {
         if (userRepository.existsUserByLogin(body.getLogin()) ||
             userRepository.existsUserByPhone(body.getPhone())) {
             throw new ValidationException("Username already existed (login or phone)");
@@ -96,7 +94,7 @@ public class UserController {
         currency.add("RUB");
         currency.add("USD");
         currency.add("EUR");
-        return currency.contains(accCode);
+        return !currency.contains(accCode);
     }
 
     @PostMapping("/createAccount")
@@ -110,7 +108,7 @@ public class UserController {
                 .getPrincipal();
         String username = userDetails.getUsername();
 
-        if (!checkCurrency(accCode)) {
+        if (checkCurrency(accCode)) {
             throw new ValidationException("Currency not found");
         }
 
@@ -158,7 +156,7 @@ public class UserController {
 
     @PostMapping("/transferMoney")
     @ApiOperation("Transfer money other user")
-    public boolean addMoney(String accCode, BigDecimal money, String phone) throws ValidationException, ParseException {
+    public boolean transferMoney(String accCode, BigDecimal money, String phone) throws ValidationException {
         UserDetails userDetails = (UserDetails) SecurityContextHolder
                 .getContext()
                 .getAuthentication()
@@ -176,7 +174,7 @@ public class UserController {
             account = user.getDefaultAccount();
         }
         String currentCurrency = account.getAccCode();
-        if (!checkCurrency(accCode)){
+        if (checkCurrency(accCode)){
             throw new ValidationException("Currency not found");
         }
         BigDecimal amountRub = new BigDecimal(money.doubleValue() * converter.get(currentCurrency));
@@ -200,7 +198,6 @@ public class UserController {
             throw new ValidationException("User 2 have not accounts");
         }
         // Получить дату
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss");
         Date date = new Date();
         DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM);
         LocalDate time = date.toInstant().atZone(ZoneOffset.ofHours(4)).toLocalDate();
