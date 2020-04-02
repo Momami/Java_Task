@@ -8,6 +8,9 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -15,10 +18,14 @@
       </list>
     </option>
   </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
   <component name="ProjectId" id="1WyqxaLPGgMaoVEQIL0QGEE9ww3" />
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -26,6 +33,9 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
   </component>
   <component name="RunDashboard">
@@ -40,13 +50,13 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.TestForBook">
-    <configuration name="TaskFour" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="PartFour.TaskFour" />
+  <component name="RunManager" selected="Application.PhoneDirectory">
+    <configuration name="ElemInMap" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Collections.ElemInMap" />
       <module name="java_t1" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="PartFour.*" />
+          <option name="PATTERN" value="Collections.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -54,12 +64,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TaskSeven" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="PartFour.TaskSeven" />
+    <configuration name="FindElemInArray" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Collections.FindElemInArray" />
       <module name="java_t1" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="PartFour.*" />
+          <option name="PATTERN" value="Collections.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -67,12 +77,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TaskSix" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="PartFour.TaskSix" />
+    <configuration name="PhoneDirectory" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Collections.PhoneDirectory" />
       <module name="java_t1" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="PartFour.*" />
+          <option name="PATTERN" value="Collections.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -96,11 +106,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.TestForBook" />
+        <item itemvalue="Application.PhoneDirectory" />
+        <item itemvalue="Application.FindElemInArray" />
+        <item itemvalue="Application.ElemInMap" />
         <item itemvalue="Application.TestForGood" />
-        <item itemvalue="Application.TaskSix" />
-        <item itemvalue="Application.TaskSeven" />
-        <item itemvalue="Application.TaskFour" />
+        <item itemvalue="Application.TestForBook" />
       </list>
     </recent_temporary>
   </component>
@@ -119,26 +129,15 @@
       <workItem from="1580199676755" duration="1546000" />
       <workItem from="1580226069597" duration="3000" />
       <workItem from="1580376481870" duration="2169000" />
+      <workItem from="1580487519245" duration="664000" />
+      <workItem from="1580576948949" duration="373000" />
+      <workItem from="1580577373146" duration="2145000" />
+      <workItem from="1582620837979" duration="662000" />
+      <workItem from="1585818603837" duration="1891000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/PartFour/TaskSix.java</url>
-          <line>19</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/PartFour/TaskSix.java</url>
-          <line>9</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

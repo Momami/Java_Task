@@ -9,7 +9,11 @@ public class TaskTwo {
         int A = scanner.nextInt();
         System.out.print("Введите B: ");
         int B = scanner.nextInt();
-        for(int i = A + 1; i < B; i++){
+        if (A >= B){
+            System.out.print("A >= B. Ошибка!");
+            return;
+        }
+        for(int i = B - 1; i > A; i--){
             System.out.print(i + " ");
         }
         System.out.println("\nКоличество: " + (B - A - 1));

@@ -52,13 +52,11 @@ public class Book {
     }
 
     public int countDayAfterYearOfBirth(){
-        //String d1 = "23.11.2011";
         String d2 = "31.12." + this.yearOfBirth;
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         Date date1 = new Date();
         Date date2 = null;
         try {
-            //date1 = format.parse(d1);
             date2 = format.parse(d2);
         } catch (Exception e) {
             e.printStackTrace();

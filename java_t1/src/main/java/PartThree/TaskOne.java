@@ -9,6 +9,10 @@ public class TaskOne {
         int A = scanner.nextInt();
         System.out.print("Введите B: ");
         int B = scanner.nextInt();
+        if (A >= B){
+            System.out.print("A >= B. Ошибка!");
+            return;
+        }
         for(int i = A; i <= B; i++){
             System.out.print(i + " ");
         }

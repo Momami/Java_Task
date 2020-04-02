@@ -18,7 +18,7 @@ public class TaskOne {
                 System.out.print(mas[i] + " ");
             }
         }
-        System.out.println("Нечетные: ");
+        System.out.println("\nНечетные: ");
         for (int i = 0; i < n; i++){
             if (mas[i] % 2 != 0) {
                 System.out.print(mas[i] + " ");
