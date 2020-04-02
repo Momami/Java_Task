@@ -10,12 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserManager {
-    public static Connection con;
+    private static Connection con;
 
     public static void addConnection(Connection con){
         UserManager.con = con;
     }
 
+    // Добавление пользователя в бд
     public static void createUserDB(User user) throws SQLException {
         String createSQL;
 
@@ -30,13 +31,15 @@ public class UserManager {
         psstmt.executeUpdate();
     }
 
-    public static List<User> selectUserForLogin(String login) throws SQLException {
+    // Получение юзера по логину
+    private static List<User> selectUserForLogin(String login) throws SQLException {
         String selectSql = "SELECT * FROM [User] where [login] = ?";
         PreparedStatement stmt = con.prepareStatement(selectSql);
         stmt.setString(1, login);
         return getUsersFromDB(stmt);
     }
 
+    // Получение юзера по телефону
     public static List<User> selectUserForPhone(String phone) throws SQLException {
         String selectSql = "SELECT * FROM [User] where phone = ?";
         PreparedStatement stmt = con.prepareStatement(selectSql);
@@ -44,7 +47,8 @@ public class UserManager {
         return getUsersFromDB(stmt);
     }
 
-    public static List<User> selectUserForLogin(String login, String password) throws SQLException {
+    // Получение юзера по логину и паролю (вход)
+    private static List<User> selectUserForLogin(String login, String password) throws SQLException {
         String selectSql = "SELECT * FROM [User] where [login] = ? and [password] = ?";
         PreparedStatement stmt = con.prepareStatement(selectSql);
         stmt.setString(1, login);
@@ -52,7 +56,8 @@ public class UserManager {
         return getUsersFromDB(stmt);
     }
 
-    public static List<User> selectUserForPhone(String phone, String password) throws SQLException {
+    // Получение юзера по телефону и паролю (вход)
+    private static List<User> selectUserForPhone(String phone, String password) throws SQLException {
         String selectSql = "SELECT * FROM [User] where phone = ? and [password] = ?";
         PreparedStatement stmt = con.prepareStatement(selectSql);
         stmt.setString(1, phone);
@@ -60,6 +65,7 @@ public class UserManager {
         return getUsersFromDB(stmt);
     }
 
+    // Возвращает список пользователей по заданному запросу
     private static List<User> getUsersFromDB(PreparedStatement stmt) throws SQLException {
         ResultSet rs = stmt.executeQuery();
         List<User> result = new ArrayList<>();
@@ -71,14 +77,12 @@ public class UserManager {
         return result;
     }
 
+    // Проверка на несуществование такого пользователя
     public static boolean checkNoUserInDb(String login, String phone) throws SQLException {
         return selectUserForPhone(phone).isEmpty() && selectUserForLogin(login).isEmpty();
     }
 
-    public static boolean checkNoUserInDb(String loginOrPhone) throws SQLException {
-        return selectUserForPhone(loginOrPhone).isEmpty() && selectUserForLogin(loginOrPhone).isEmpty();
-    }
-
+    // Получение юзера по логину или номеру телефона (вход)
     public static User getUserForLoginOrPhone(String loginOrPhone, String password) throws SQLException{
         List<User> userList = selectUserForLogin(loginOrPhone, password);
         if (userList.isEmpty()){
@@ -92,6 +96,7 @@ public class UserManager {
         }
     }
 
+    // Получение юзера по id
     public static User selectUserForId(long idUser) throws SQLException {
         String selectSql = "SELECT * FROM [User] where id = ?";
         PreparedStatement stmt = con.prepareStatement(selectSql);

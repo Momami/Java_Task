@@ -12,12 +12,8 @@ import Managers.UserManager;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +23,7 @@ public class LogicWork {
     private static Map<String, Float> converter;
     private static Object SQLException;
 
+    // Конвертер валют
     private static void initConverter(){
         converter = new HashMap<>();
         converter.put("RUB", 1f);
@@ -34,7 +31,7 @@ public class LogicWork {
         converter.put("EUR", 70.95f);
     }
 
-
+    // Подключение к бд
     public static void preparedAction() throws Throwable {
         try {
             initConverter();
@@ -50,16 +47,19 @@ public class LogicWork {
         }
     }
 
+    // Создание пользователя
     public static void createUser(String login, String password, String address, String phone) throws SQLException {
         User user = new User(login, password, address, phone);
         UserManager.createUserDB(user);
     }
 
+    // Создание счета для пользователя
     public static void createAccount(long idUser, String accCode, boolean defAcc) throws SQLException {
         Account account = new Account(idUser, accCode, defAcc);
         AccountManager.createAccountDB(account);
     }
 
+    // Пополнение счета
     public static void addMoneyBalance(float sum, String accCode, Account account) throws SQLException {
         sum = sum * converter.get(accCode);
         // перевод валют в зависимости от currency
@@ -69,10 +69,12 @@ public class LogicWork {
         AccountManager.updateAccountAmount(account);
     }
 
+    // Перевод денег в соответствии с валютой
     public static String transferMoney(User userIn, User userOut, String accCode, BigDecimal amount)
-            throws SQLException, ParseException {
+            throws SQLException {
         List<Account> accIn = AccountManager.selectAccountForCurrency(userIn.getId(), accCode);
         Account acc;
+        // Если нет аккаунта с такой валютой , берем аккаунт по умолчанию
         if (accIn.isEmpty()){
             acc = AccountManager.selectDefaultAccountUser(userIn.getId());
         }
@@ -90,8 +92,7 @@ public class LogicWork {
         }
         // Получить дату
         Date date = new Date();
-        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM);
-        LocalDate time = date.toInstant().atZone(ZoneOffset.ofHours(4)).toLocalDate();
+        LocalDate dateOfOperation = date.toInstant().atZone(ZoneOffset.ofHours(4)).toLocalDate();
         BigDecimal amountRub = new BigDecimal(amount.doubleValue() * converter.get(accCode));
         // Рассчитать остаток на счете
         BigDecimal amountBefore = acc.getAmount();
@@ -110,7 +111,7 @@ public class LogicWork {
         accOut.setAmount(addBalance);
         AccountManager.updateAccountAmount(accOut);
         // Добавление в журнал операций
-        Operation operation = new Operation(time, accCode, acc.getId(), accOut.getId(), amount,
+        Operation operation = new Operation(dateOfOperation, accCode, acc.getId(), accOut.getId(), amount,
                 amountBefore, acc.getAmount());
         OperationManager.createOperation(operation);
         return "Успешно!";

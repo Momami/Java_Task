@@ -1,5 +1,6 @@
 package Managers;
 
+import Classes.Account;
 import Classes.Operation;
 import Classes.User;
 
@@ -11,12 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OperationManager {
-    public static Connection con;
+    private static Connection con;
 
     public static void addConnection(Connection con){
         OperationManager.con = con;
     }
 
+    // Добавление новой операции
     public static void createOperation(Operation operation) throws SQLException {
         String createSQL;
         createSQL = "INSERT INTO Operation (dateOfOperation, accCode, accIn, accOut, amount," +
@@ -34,14 +36,20 @@ public class OperationManager {
         psstmt.executeUpdate();
     }
 
+    // Получение списка операций по всем аккаунтам юзера
     public static List<Operation> selectAllOperationUser(User user) throws SQLException {
-        String selectSql = "SELECT * FROM Operation where accIn = ?";
-        PreparedStatement stmt = con.prepareStatement(selectSql);
-        stmt.setLong(1, user.getId());
-        // stmt.setLong(2, user.getId());
-        return getAccountFromDB(stmt);
+        List<Account> accountList = AccountManager.selectAccountUsers(user.getId());
+        List<Operation> operations = new ArrayList<>();
+        for (Account account: accountList) {
+            String selectSql = "SELECT * FROM Operation where accIn = ?";
+            PreparedStatement stmt = con.prepareStatement(selectSql);
+            stmt.setLong(1, account.getId());
+            operations.addAll(getAccountFromDB(stmt));
+        }
+        return operations;
     }
 
+    // Возвращает все операции по заданному запросу к бд в виде списка
     private static List<Operation> getAccountFromDB(PreparedStatement stmt) throws SQLException {
         ResultSet rs = stmt.executeQuery();
         List<Operation> result = new ArrayList<>();

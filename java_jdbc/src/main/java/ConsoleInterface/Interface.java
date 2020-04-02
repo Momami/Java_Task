@@ -19,7 +19,8 @@ import java.util.List;
 public class Interface {
     private static BufferedReader reader;
 
-    public static String inputCurrency() throws IOException {
+    // Ввод валюты
+    private static String inputCurrency() throws IOException {
         String[] currency = {"RUB", "USD", "EUR"};
         System.out.println("Выберите валюту:\n0 - RUB\n1 - USD\n2 - EUR");
         int index = Integer.parseInt(reader.readLine());
@@ -31,7 +32,8 @@ public class Interface {
         return currency[index];
     }
 
-    public static void createUserInterface() throws IOException, SQLException {
+    // Интерфейс создания пользователя
+    private static void createUserInterface() throws IOException, SQLException {
         System.out.print("Введите логин: ");
         String login = reader.readLine();
         System.out.print("Введите пароль: ");
@@ -45,11 +47,12 @@ public class Interface {
             System.out.println("Пользователь успешно создан!");
         }
         else{
-            System.out.println("Пользователь с таким логином и/или паролем уже зарегистрирован!");
+            System.out.println("Пользователь с таким логином и/или телефоном уже зарегистрирован!");
         }
     }
 
-    public static void createAccount(User user) throws IOException, SQLException {
+    // Интерфейс создания аккаунта
+    private static void createAccount(User user) throws IOException, SQLException {
         String currency = inputCurrency();
         if (AccountManager.checkNoAccCurrency(user.getId(), currency)){
             System.out.println("Сделать этот счет основным (y/n)?");
@@ -62,7 +65,8 @@ public class Interface {
         }
     }
 
-    public static void addMoneyOnAccount(User user) throws SQLException, IOException {
+    // Пополнение счета пользователя
+    private static void addMoneyOnAccount(User user) throws SQLException, IOException {
         List<Account> accList = AccountManager.selectAccountUsers(user.getId());
         if (accList.isEmpty()){
             System.out.println("У Вас еще нет ни одного счёта для пополнения!");
@@ -74,6 +78,10 @@ public class Interface {
                     accList.get(i).getAmount().floatValue());
         }
         int account = Integer.parseInt(reader.readLine());
+        while (account < 0 || account >= accList.size()){
+            System.out.println("Нет такого счета! Пожалуйста, повторите ввод!");
+            account = Integer.parseInt(reader.readLine());
+        }
         String cur = inputCurrency();
         System.out.print("Введите сумму для пополнения: ");
         float sum = Float.parseFloat(reader.readLine());
@@ -85,7 +93,8 @@ public class Interface {
         LogicWork.addMoneyBalance(sum, cur, accList.get(account));
     }
 
-    public static void browseOperations(User user) throws SQLException {
+    // Показ операций пользователя
+    private static void browseOperations(User user) throws SQLException {
         List<Operation> operations = OperationManager.selectAllOperationUser(user);
         System.out.println("Операции пользователя: ");
         int i = 1;
@@ -101,8 +110,9 @@ public class Interface {
         }
     }
 
+    // Интерфейс для перевода денег
     private static void transferMoneyInterface(User user) throws IOException, SQLException, ParseException {
-        // TO DO перевод по номеру телефона
+        // Перевод но номеру
         System.out.print("Введите номер телефона получателя: ");
         String phone = reader.readLine();
         List<User> users = UserManager.selectUserForPhone(phone);
@@ -117,6 +127,7 @@ public class Interface {
         System.out.println(message);
     }
 
+    // Все операции пользователя (после входа)
     private static void operationsUsers(User user) throws IOException, SQLException, ParseException {
         System.out.println("Вы вошли в систему!");
         String message = "Выберите действие:\n1 - Создать аккаунт\n2 - Пополнить счёт\n" +
@@ -148,7 +159,8 @@ public class Interface {
         }
     }
 
-    public static void inputIntoSystem() throws IOException, SQLException, ParseException {
+    // Вход в систему
+    private static void inputIntoSystem() throws IOException, SQLException, ParseException {
         System.out.print("Введите логин или телефон: ");
         String loginOrPhone = reader.readLine();
         System.out.print("Введите пароль: ");
@@ -162,6 +174,7 @@ public class Interface {
         }
     }
 
+    // Главный интерфейс (создание, вход или выход)
     public static void mainInterface(){
         try {
             LogicWork.preparedAction();

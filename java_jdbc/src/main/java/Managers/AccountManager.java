@@ -11,17 +11,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AccountManager {
-    public static Connection con;
+    private static Connection con;
 
     public static void addConnection(Connection con){
         AccountManager.con = con;
     }
 
+    // Добавление нового счета в базу
     public static void createAccountDB(Account account) throws SQLException {
         List<Account> accList = AccountManager.selectAccountUsers(account.getIdUser());
+        // Если есть счета у пользователя и добавляемый будет по умолчанию,
+        // то остальные делаем не дефолтными
         if (!accList.isEmpty() && account.isDefAccount()){
             updateAccountDefault(account.getIdUser(), false);
         }
+        // Если счетов нет, то этот становится по умолчанию
         if (accList.isEmpty()){
             account.setDefAccount(true);
         }
@@ -37,7 +41,8 @@ public class AccountManager {
 
     }
 
-    public static void updateAccountDefault(Long idUser, boolean defAcc) throws SQLException {
+    // Обновление дефолтности у счетов юзера
+    private static void updateAccountDefault(Long idUser, boolean defAcc) throws SQLException {
         String updateSql = "UPDATE Account SET defAccount = ? where idUser = ?";
         PreparedStatement stmt = con.prepareStatement(updateSql);
         stmt.setBoolean(1, defAcc);
@@ -45,6 +50,7 @@ public class AccountManager {
         stmt.executeUpdate();
     }
 
+    // Обновление баланса аккаунта
     public static void updateAccountAmount(Account account) throws SQLException {
         String updateSql = "UPDATE Account SET amount = ? where idUser = ? and accCode = ?";
         PreparedStatement stmt = con.prepareStatement(updateSql);
@@ -54,6 +60,7 @@ public class AccountManager {
         stmt.executeUpdate();
     }
 
+    // Выборка счета юзера по валюте
     public static List<Account> selectAccountForCurrency(long idUser, String currency) throws SQLException {
         String selectSql = "SELECT * FROM Account where idUser = ? and accCode = ?";
         PreparedStatement stmt = con.prepareStatement(selectSql);
@@ -62,6 +69,7 @@ public class AccountManager {
         return getAccountFromDB(stmt);
     }
 
+    // Выборка всех счетов юзера
     public static List<Account> selectAccountUsers(long idUser) throws SQLException {
         String selectSql = "SELECT * FROM Account where idUser = ?";
         PreparedStatement stmt = con.prepareStatement(selectSql);
@@ -69,6 +77,7 @@ public class AccountManager {
         return getAccountFromDB(stmt);
     }
 
+    // Выборка дефолтного счета юзера
     public static Account selectDefaultAccountUser(long idUser) throws SQLException {
         List<Account> accList = AccountManager.selectAccountUsers(idUser);
         for (Account acc : accList){
@@ -79,6 +88,7 @@ public class AccountManager {
         return null;
     }
 
+    // Выборка аккаунтов и возврат списка аккаунтов по запросу
     private static List<Account> getAccountFromDB(PreparedStatement stmt) throws SQLException {
         ResultSet rs = stmt.executeQuery();
         List<Account> result = new ArrayList<>();
@@ -90,10 +100,12 @@ public class AccountManager {
         return result;
     }
 
+    // Проверка на несуществование счета
     public static boolean checkNoAccCurrency(long idUser, String currency) throws SQLException {
         return selectAccountForCurrency(idUser, currency).isEmpty();
     }
 
+    // Ищем пользователя данного аккаунта
     public static User getUserOfAccount(long idAccount) throws SQLException {
         String selectSql = "SELECT idUser FROM Account where id = ?";
         PreparedStatement stmt = con.prepareStatement(selectSql);
